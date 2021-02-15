@@ -16,8 +16,6 @@ var funcStyle = 'color:blue';
 var funcID = 0;
 
 function FuncComp(props) {
-
-
   var numberState = useState(props.initNumber);
   var number = numberState[0]
   var setNumber = numberState[1];
@@ -28,12 +26,37 @@ function FuncComp(props) {
   //var setDate = dateState[1];
   //console.log(date)
   var [_date, setDate] = useState((new Date().toString()))
+//it changes html title which is far from this = SIDE EFFECT
+
+
+// === componentDidMount 1 time execute only after initial render
+useEffect(function(){
+  console.log('%cfunc => useEffect number(componentDidMount)'+(funcID++), funcStyle);  
+  document.title = number;
+  //if u wanna clean up write code below return function(){ ... } = effect With Cleanup
+  return function(){
+    console.log('%cfunc => useEffect  return (componentWillUnmount)'+(funcID++), funcStyle);  
+  }
+},[]);
 
   useEffect(function(){
-    console.log('%cfunc => useEffect(componentDidMount & componentDidUpdate )'+(++funcID), funcStyle);  
-    document.title = number + ' : ' + _date;
-    //it changes html title which is far from this = SIDE EFFECT
-  });
+    console.log('%cfunc => useEffect number(componentDidMount & componentDidUpdate )'+(funcID++), funcStyle);  
+    document.title = number ;
+    //if u wanna clean up write code below return function(){ ... } = effect With Cleanup
+    return function(){
+      console.log('%cfunc => useEffect number return (componentDidMount & componentDidUpdate )'+(funcID++), funcStyle);  
+    }
+  },[number]);
+
+  useEffect(function(){
+    console.log('%cfunc => useEffect _date(componentDidMount & componentDidUpdate )'+(funcID++), funcStyle);  
+    document.title = _date ;
+    //if u wanna clean up write code below return function(){ ... } = effect With Cleanup
+    return function(){
+      console.log('%cfunc => useEffect _date return (componentDidMount & componentDidUpdate )'+(funcID++), funcStyle);  
+    }
+  },[_date]);
+
     console.log('%cfunc => render'+(++funcID), funcStyle);
   return(
     <div className="container">
