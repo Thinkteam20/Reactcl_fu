@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import './App.css'
 
 
@@ -12,7 +12,12 @@ function App() {
   );
 }
 
+var funcStyle = 'color:blue';
+var funcID = 0;
+
 function FuncComp(props) {
+
+
   var numberState = useState(props.initNumber);
   var number = numberState[0]
   var setNumber = numberState[1];
@@ -23,6 +28,13 @@ function FuncComp(props) {
   //var setDate = dateState[1];
   //console.log(date)
   var [_date, setDate] = useState((new Date().toString()))
+
+  useEffect(function(){
+    console.log('%cfunc => useEffect(componentDidMount & componentDidUpdate )'+(++funcID), funcStyle);  
+    document.title = number + ' : ' + _date;
+    //it changes html title which is far from this = SIDE EFFECT
+  });
+    console.log('%cfunc => render'+(++funcID), funcStyle);
   return(
     <div className="container">
       <h2>function style component</h2>
